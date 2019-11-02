@@ -10,7 +10,10 @@ class BazosSpider(scrapy.Spider):
         }
     }
     start_urls = [
-        "https://www.bazos.cz/search.php?hledat=keg&rubriky=www&hlokalita=60200&humkreis=25&cenaod=&cenado=&kitx=ano"
+        "https://www.bazos.cz/search.php?hledat=keg&rubriky=www&hlokalita=60200&humkreis=25&cenaod=&cenado=&kitx=ano",
+        "https://www.bazos.cz/search.php?hledat=keg&rubriky=www&hlokalita=68605&humkreis=25&cenaod=&cenado=&kitx=ano",
+        "https://www.bazos.cz/search.php?hledat=pivni+sud&rubriky=www&hlokalita=60200&humkreis=25&cenaod=&cenado=&kitx=ano",
+        "https://www.bazos.cz/search.php?hledat=pivni+sud&rubriky=www&hlokalita=68605&humkreis=25&cenaod=&cenado=&kitx=ano"
     ]
 
     def parse(self, response):
