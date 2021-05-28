@@ -5,7 +5,7 @@ async function load() {
         .reverse()
         .map(k => data[k])
 
-    const html = sorted.map(i => `<div>${new Date(i.time*1000).toLocaleTimeString(undefined, {dateStyle:"short", timeStyle:"short"})} <a href="${i.link}">${i.name}</a></div>`);
+    const html = sorted.map(i => `<div>${new Date(i.time*1000).toLocaleString(undefined, {dateStyle:"short", timeStyle:"short"})} <a href="${i.link}">${i.name}</a></div>`);
 
     document.write(html.join(""));
 }
