@@ -18,7 +18,7 @@ const renderItem = (item) => {
     </div>
 
     <div>${ item.desc }</div>
-    <img src="${ item.img || '' }">
+    <img src="${ item.img || '' }" loading="lazy">
     </div>
     `;
 
