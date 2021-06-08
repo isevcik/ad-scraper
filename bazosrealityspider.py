@@ -7,7 +7,7 @@ class BazosSpider(scrapy.Spider):
     name = "bazos_spider"
     custom_settings = {
         'ITEM_PIPELINES': {
-            'bazosspider.JsonWriterPipeline': 300,
+            'bazosrealityspider.JsonWriterPipeline': 300,
         },
         "DEPTH_LIMIT": 2,
     }
@@ -27,7 +27,7 @@ class BazosSpider(scrapy.Spider):
         return self.definitions_to_start_requests(self.definitions)
 
     def parse(self, response):
-        ITEM_SELECTOR = "table[class=inzeraty]"
+        ITEM_SELECTOR = "div.inzeraty.inzeratyflex"
 
         for item in response.css(ITEM_SELECTOR):
             link = item.css("a::attr(href)").get()
@@ -39,7 +39,7 @@ class BazosSpider(scrapy.Spider):
                 "link": link,
                 "name": item.css(".nadpis a::text").get(),
                 "desc": item.css(".popis::text").get(),
-                "price": item.css(".cena b::text").get(),
+                "price": item.css(".inzeratycena b::text").get(),
                 "date": date,
                 "img": item.css("img::attr(src)").get(),
                 "raw": item.get(),
