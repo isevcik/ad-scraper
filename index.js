@@ -1,3 +1,10 @@
+const globals = {
+  definitions: [
+    { key: "BA", file: "bazos.json" },
+    { key: "BR", file: "bezrealitky.json" },
+  ],
+};
+
 const formatDate = (timestamp, time=true) => {
   const date = new Date(timestamp * 1000);
 
@@ -25,8 +32,6 @@ const renderItem = (item) => {
   return div;
 }
 
-const globals = {};
-
 function hydrateItem(item) {
   item.datetimeFormatted = formatDate(item.time);
   item.dateFormatted = formatDate(item.time, false);
@@ -36,8 +41,10 @@ function hydrateItem(item) {
 }
 
 async function load() {
-  const res = await fetch(`bazos.json?${new Date().valueOf()}`);
-  const data = await res.json();
+  const responses = await Promise.all(globals.definitions.map(d => fetch(`${d.file}?${new Date().valueOf()}`)));
+  const lists = await Promise.all(responses.map(r => r.json()));
+  const data = Object.assign({}, ...lists);
+
   const sorted = Object.keys(data).sort((a, b) => data[a].time < data[b].time ? -1 : 1)
     .reverse()
     .map(k => data[k])
