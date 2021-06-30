@@ -1,6 +1,6 @@
 const globals = {
   definitions: [
-    { key: "BA", file: "bazos.json" },
+    { key: "BA", file: "bazosreality_dum.json" },
     { key: "BR", file: "bezrealitky.json" },
   ],
 };
