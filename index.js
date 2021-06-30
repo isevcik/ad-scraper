@@ -18,6 +18,7 @@ const renderItem = (item) => {
   const div = `<div class="item">
     ${ item.datetimeFormatted } 
     <a href="${item.link}" class="name">${item.name}</a>
+    <a href="${item.link}" target="_blank" class="name"><strong>⧉</strong></a>
 
     <div class="second-line">
       <span class="price">${ item.price }</span>

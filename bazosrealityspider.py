@@ -17,10 +17,7 @@ class BazosSpider(scrapy.Spider):
             # hledat = params["hledat"]
             # cenado = params["cenado"]
             for hlokalita in params["hlokalita"]:
-                # url = f"https://www.bazos.cz/search.php?hledat={hledat}&rubriky=www&hlokalita={hlokalita}&humkreis=25&cenaod=&cenado={cenado}&kitx=ano"
-                
-                # https://reality.bazos.cz/prodam/dum/?hledat=&rubriky=reality&hlokalita=68201&humkreis=30&cenaod=&cenado=&Submit=Hledat&kitx=ano
-                url = f"https://reality.bazos.cz/prodam/dum/?hledat=&rubriky=reality&hlokalita={hlokalita}&humkreis=30&cenaod=&cenado=&kitx=ano"
+                url = self.url.format(hlokalita=hlokalita);
                 yield scrapy.Request(url=url, dont_filter=True)
 
     def start_requests(self):
@@ -56,16 +53,17 @@ class JsonWriterPipeline(object):
 
     def open_spider(self, spider):
         try:
-            with open("bazos.json","r") as f:
+            with open(spider.jsonfile,"r") as f:
                 self.items = json.load(f)
         except FileNotFoundError as _:
             pass
 
     def close_spider(self, spider):
-        with open("bazos.json","w+") as f:
+        with open(spider.jsonfile,"w+") as f:
             json.dump(self.items, f, sort_keys=True, indent=4, separators=(',', ': '))
 
     def process_item(self, item, spider):
         if item["link"] not in self.items:
             item["time"] = time.time()
             self.items[item["link"]] = item
+

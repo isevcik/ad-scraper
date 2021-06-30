@@ -1,0 +1,6 @@
+*/15 * * * * www-data cd /var/www/ivansevcik.cz/r && python3 /usr/local/bin/bazosreality_dum_definitions.py>>/tmp/bazosreality_dum_scraper.output 2>&1
+*/15 * * * * www-data cd /var/www/ivansevcik.cz/r && python3 /usr/local/bin/bazosreality_pozemek_definitions.py>>/tmp/bazosreality_pozemek_scraper.output 2>&1
+
+*/15 * * * * www-data cd /var/www/ivansevcik.cz/r && python3 /usr/local/bin/bezrealitkydefinitions.py>>/tmp/bezrealitky_scraper.output 2>&1
+
+

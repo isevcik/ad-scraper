@@ -15,7 +15,9 @@ definitions = {
         "hlokalita": ["76001"],
     },
 }
+url = "https://reality.bazos.cz/prodam/dum/?hledat=&rubriky=reality&hlokalita={hlokalita}&humkreis=30&cenaod=&cenado=&kitx=ano"
+jsonfile = "bazosreality_dum.json"
 
 process = CrawlerProcess()
-process.crawl(BazosSpider, definitions=definitions)
+process.crawl(BazosSpider, jsonfile=jsonfile, url=url, definitions=definitions)
 process.start()
