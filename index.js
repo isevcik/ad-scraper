@@ -1,7 +1,8 @@
 const globals = {
   definitions: [
-    { key: "BA", file: "bazosreality_dum.json" },
-    { key: "BR", file: "bezrealitky.json" },
+    { key: "Domy", file: "bazosreality_dum.json" },
+    { key: "Domy", file: "bezrealitky.json" },
+    { key: "Pozemky", file: "bazosreality_pozemek.json" },
   ],
 };
 
@@ -44,6 +45,10 @@ function hydrateItem(item) {
 async function load() {
   const responses = await Promise.all(globals.definitions.map(d => fetch(`${d.file}?${new Date().valueOf()}`)));
   const lists = await Promise.all(responses.map(r => r.json()));
+  lists.forEach((list, index) => {
+    const key = globals.definitions[index].key;
+    Object.values(list).forEach(e => e.key = key);
+  });
   const data = Object.assign({}, ...lists);
 
   const sorted = Object.keys(data).sort((a, b) => data[a].time < data[b].time ? -1 : 1)
@@ -61,42 +66,62 @@ function buildElement(tag, innerHTML) {
   return element;
 }
 
-function buildList() {
+function buildList(key) {
   const items = globals.items
     // .filter(i => i.dateFormatted === globals.date)
+    .filter(i => !key || i.key === key)
     .map(renderItem);
   const html = items.join("");
   const element = buildElement("div", html);
 
-  globals.body.appendChild(element);
+  globals.list.innerHTML = "";
+  globals.list.appendChild(element);
 }
 
 function buildMenu() {
   const renderItem = item => {
-    return `<li>${ item }</li>`;
+    return `<li><a href="#${ item }">${ item }</a></li>`;
   }
-  const dates = new Set(globals.items.map(i => i.dateFormatted));
-  const five = [...dates]
-    .slice(0, 5);
-  const html = five
+  // const dates = new Set(globals.items.map(i => i.dateFormatted));
+  // const five = [...dates]
+    // .slice(0, 5);
+  // const html = five
+  //   .map(renderItem)
+  //   .join("");
+
+  const html = [...new Set(globals.definitions.map(d => d.key))]
     .map(renderItem)
     .join("");
-
   const menu = buildElement("ul", html);
 
-  globals.menuDates = dates;
-  globals.date = five[0];
-  globals.body.appendChild(menu);
-  // globals.body.insertAdjacentElement("afterbegin", menu);
+  globals.menu.appendChild(menu);
+}
+
+function getKey() {
+  const key = location.hash.slice(1);
+  return key;
+}
+
+function onHashChanged() {
+  const key = getKey();
+  buildList(key);
 }
 
 async function start() {
-  globals.body = document.querySelector("body");
+  globals.menu = document.querySelector(".menu");
+  globals.list = document.querySelector(".list");
+  window.addEventListener("hashchange", onHashChanged);
 
   await load();
 
-  // buildMenu();
-  buildList();
+  buildMenu();
+
+  const key = getKey();
+  if (key) {
+    buildList(key);
+  } else {
+    location.hash = "#Domy";
+  }
 }
 
 start();
